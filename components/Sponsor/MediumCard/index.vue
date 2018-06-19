@@ -1,25 +1,29 @@
 <template lang="pug">
 .medium-card
-    .image This is image
-    .desc This is desc of Medium
-        //- .name name
-        //- .text
-        //- .detail-link
+    .image
+      img.img(:src="sponsor.logoUrl")
+    .desc
+      .name {{ sponsor ? sponsor.name_ja : "nonName"}} 
+      .text {{ sponsor ? sponsor.description_ja : "noDesc"}}
+      .detail-link
 </template>
 
 <script>
   export default {
-    name: 'medium-card'
+    name: 'medium-card',
+    props: ["sponsor"]
   }
 </script>
 
 <style lang="scss" scoped>
 .medium-card {
-    display: inline-block;
-    height: 200px;
-    width: 300px;
-    margin: 0 10px;
-    background-color: green;
-    color: white;
+  height: 200px;
+  width: 300px;
+  margin: 10px 10px;
+  background-color: green;
+  color: white;
+}
+.img {
+  width: 50px;
 }
 </style>
