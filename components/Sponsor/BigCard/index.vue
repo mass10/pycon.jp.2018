@@ -19,7 +19,7 @@
 .big-card {
     height: 300px;
     width: 400px;
-    margin: 0 10px;
+    margin: 10px 10px;
     background-color: green;
     color: white;
     .img {

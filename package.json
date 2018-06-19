@@ -19,6 +19,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.18.0",
+    "lodash": "^4.17.10",
     "moment": "^2.22.1",
     "node-sass": "^4.9.0",
     "nuxt": "^1.4.0",

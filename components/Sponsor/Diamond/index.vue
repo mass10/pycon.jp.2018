@@ -3,7 +3,7 @@ section#DiamondSponsor.sponsor-section
   h2 Diamond Sponsor
   .uk-grid.body
     .uk-width-2-5.card
-       img.img(:src="sponsor.logoUrl")
+       img.img(:src="sponsor ? sponsor.logoUrl : ''")
     .uk-width-3-5.text
        .name {{ sponsor ? sponsor.name_ja : '' }} 
        .desc {{ sponsor ? sponsor.description_ja : '' }}

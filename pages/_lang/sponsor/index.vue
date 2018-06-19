@@ -11,6 +11,8 @@
 
 
 <script>
+  import axios from 'axios';
+  import _ from 'lodash';
   import Diamond from '~/components/Sponsor/Diamond';
   import Platinum from '~/components/Sponsor/Platinum';
   import Gold from '~/components/Sponsor/Gold';
@@ -18,11 +20,8 @@
   import Silver from '~/components/Sponsor/Silver';
   import Patron from '~/components/Sponsor/Patron';
   import Media from '~/components/Sponsor/Media';
-  const tmpSponsors = [
-    {"id":1,"stateId":1,"name_ja":"両備通商白石有限会社","name_en":"","package":"Gold", "logoUrl":"https://lh5.googleusercontent.com/8Bj0abpyHrrqu94iMXbEuT35qQdKR6tqpwZm7FypWM5TxRvtZ8bI7QjaFpYXsYfiM39zry8WBDYYqAsePww9=w2880-h804", "siteUrl_ja":"http://www.example.org","siteUrl_en":"http://www.example.org","description_ja":"からだは音楽のせいせい口たちを糸が弾い風たた。","description_en":"","recruitText_ja":"顔つきへいろて消しては許ししてもいる今夜出したまで云ってするとはじめにのんなあことも弾きなあのむしないごさあごさあおそらすっ来ましう。","recruitText_en":"","recruitUrl_ja":"","recruitUrl_en":""},
-    {"id":2,"stateId":1,"name_ja":"第三共ホールディングス共立組合","name_en":"","package":"Diamond", "logoUrl":"https://lh5.googleusercontent.com/8Bj0abpyHrrqu94iMXbEuT35qQdKR6tqpwZm7FypWM5TxRvtZ8bI7QjaFpYXsYfiM39zry8WBDYYqAsePww9=w2880-h804", "siteUrl_ja":"http://www.example.org","siteUrl_en":"http://www.example.org","description_ja":"それからしっかり生意気ましたってセロたた。正確たますんましもたそれからねずみのばか人の所のもにやにや無理たんて、そこなんて子へ困っれんましです。","description_en":"","recruitText_ja":"ばかはもうご遁見るながらいのかはぶっつけたろようを云いからセロはおセロを居り顔はやはりこすりてそう青くからだを弾い今がは弾いかとなきように消しでまし。","recruitText_en":"","recruitUrl_ja":"","recruitUrl_en":""},
-    {"id":3,"stateId":1,"name_ja":"有限会社テクノラサフジ","name_en":"","package":"Silver", "logoUrl":"https://lh5.googleusercontent.com/8Bj0abpyHrrqu94iMXbEuT35qQdKR6tqpwZm7FypWM5TxRvtZ8bI7QjaFpYXsYfiM39zry8WBDYYqAsePww9=w2880-h804", "siteUrl_ja":"http://www.example.org","siteUrl_en":"http://www.example.org","description_ja":"困るすぎここは実をひどくたてはじめの床のトランペットあたりのひる第一かっこうたちのかっかが聞きつけていございた。かっこうも一生思っながら行った。","description_en":"","recruitText_ja":"そのなかみんなかゴーシュ集りの狸が野ねずみとあきものをしだた。", "recruitText_en":"","recruitUrl_ja":"","recruitUrl_en":""}
-  ];
+
+  const apiEndpint = 'https://script.google.com/macros/s/AKfycbyKmE6Ew9aWmOnj3VSwn435T8cx8kF0SkJb9fN7_PdE_ME2QpqP/exec';
 
   export default {
     name: 'sponsor',
@@ -35,15 +34,31 @@
       Patron,
       Media
     },
-    data: function(){
+    data() {
       return {
-        diamondSponsor: tmpSponsors[0],
-        platinumSponsors: tmpSponsors,
-        goldSponsors: tmpSponsors.concat(tmpSponsors[0]),
-        sprintSponsors: tmpSponsors.slice(1),
-        silverSponsors: tmpSponsors.concat(tmpSponsors, tmpSponsors, tmpSponsors),
-        patron: tmpSponsors.concat(tmpSponsors, tmpSponsors, tmpSponsors),
-        mediaSponsors: tmpSponsors.concat(tmpSponsors, tmpSponsors)
+        sponsors: null,
+        diamondSponsor: null,
+        platinumSponsors: null,
+        goldSponsors: null,
+        sprintSponsors: null,
+        silverSponsors: null,
+        patron: null,
+        mediaSponsors: null
+      }
+    },
+    mounted() {
+      axios.get(apiEndpint)
+        .then(res => (this.sponsors = res.data.data ))
+    },
+    watch: {
+      sponsors: function(){
+        this.diamondSponsor = _.filter(this.sponsors, {'package': 'Diamond'})[0];
+        this.platinumSponsors = _.filter(this.sponsors, {'package': 'Platinum'});
+        this.goldSponsors = _.filter(this.sponsors, {'package': 'Gold'});
+        this.sprintSponsors = _.filter(this.sponsors, {'package': 'Sprint'});
+        this.silverSponsors = _.filter(this.sponsors, {'package': 'Silver'});
+        this.patron = _.filter(this.sponsors, {'package': 'Patron'});
+        this.mediaSponsors = _.filter(this.sponsors, {'package': 'Media'}); 
       }
     },
     head () {
