@@ -1,12 +1,16 @@
 <template lang="pug">
 #pycon-sponsor
-    Diamond(:sponsor="diamondSponsor")
-    Platinum(:sponsors="platinumSponsors")
-    Gold(:sponsors="goldSponsors")
-    Sprint(:sponsors="sprintSponsors")
-    Silver(:sponsors="silverSponsors")
-    Patron(:sponsors="patron")
-    Media(:sponsors="mediaSponsors")
+  div.uk-container
+    diamond(:sponsor="diamondSponsor")
+    platinum(:sponsors="platinumSponsors")
+    gold(:sponsors="goldSponsors")
+    sprint(:sponsors="sprintSponsors")
+    silver(:sponsors="silverSponsors")
+    lunch(:sponsors="lunchSponsors")
+    lanyard(:sponsors="lanyardSponsors")
+    water(:sponsors="waterSponsors")
+    patron(:sponsors="patron")
+    media(:sponsors="mediaSponsors")
 </template>
 
 
@@ -18,10 +22,13 @@
   import Gold from '~/components/Sponsor/Gold';
   import Sprint from '~/components/Sponsor/Sprint';
   import Silver from '~/components/Sponsor/Silver';
+  import Lunch from '~/components/Sponsor/Lunch';
+  import Lanyard from '~/components/Sponsor/Lanyard';
+  import Water from '~/components/Sponsor/Water';
   import Patron from '~/components/Sponsor/Patron';
   import Media from '~/components/Sponsor/Media';
 
-  const apiEndpint = 'https://script.google.com/macros/s/AKfycbyKmE6Ew9aWmOnj3VSwn435T8cx8kF0SkJb9fN7_PdE_ME2QpqP/exec';
+  const apiEndpint = 'https://script.google.com/macros/s/AKfycbyKmE6Ew9aWmOnj3VSwn435T8cx8kF0SkJb9fN7_PdE_ME2QpqP/exec?stage=dev&noCache=true';
 
   export default {
     name: 'sponsor',
@@ -31,34 +38,47 @@
       Gold,
       Sprint,
       Silver,
+      Lunch,
+      Lanyard,
+      Water,
       Patron,
       Media
     },
     data() {
       return {
         sponsors: null,
-        diamondSponsor: null,
-        platinumSponsors: null,
-        goldSponsors: null,
-        sprintSponsors: null,
-        silverSponsors: null,
-        patron: null,
-        mediaSponsors: null
+        diamondSponsor: [],
+        platinumSponsors: [],
+        goldSponsors: [],
+        sprintSponsors: [],
+        silverSponsors: [],
+        lunchSponsors: [],
+        lanyardSponsors: [],
+        waterSponsors: [],
+        patron: [],
+        mediaSponsors: [] 
       }
     },
     mounted() {
       axios.get(apiEndpint)
-        .then(res => (this.sponsors = res.data.data ))
+        .then(res => (this.sponsors = res.data.data))
     },
     watch: {
-      sponsors: function(){
-        this.diamondSponsor = _.filter(this.sponsors, {'package': 'Diamond'})[0];
-        this.platinumSponsors = _.filter(this.sponsors, {'package': 'Platinum'});
-        this.goldSponsors = _.filter(this.sponsors, {'package': 'Gold'});
-        this.sprintSponsors = _.filter(this.sponsors, {'package': 'Sprint'});
-        this.silverSponsors = _.filter(this.sponsors, {'package': 'Silver'});
-        this.patron = _.filter(this.sponsors, {'package': 'Patron'});
-        this.mediaSponsors = _.filter(this.sponsors, {'package': 'Media'}); 
+      sponsors: function(sponsors){
+        sponsors.forEach(sponsor => {
+          switch (sponsor['package']) {
+            case 'Diamond': this.diamondSponsor = sponsor; break
+            case 'Platinum': this.platinumSponsors.push(sponsor); break
+            case 'Gold': this.goldSponsors.push(sponsor); break
+            case 'Sprint': this.sprintSponsors.push(sponsor); break
+            case 'Silver': this.silverSponsors.push(sponsor); break
+            case 'Lunch': this.lunchSponsors.push(sponsor); break
+            case 'Lanyard': this.lanyardSponsors.push(sponsor); break
+            case 'Water': this.waterSponsors.push(sponsor); break
+            case 'Patron': this.patron.push(sponsor); break
+            case 'Media': this.mediaSponsors.push(sponsor); break
+          }
+        });
       }
     },
     head () {
@@ -71,6 +91,6 @@
 
 <style lang="scss" scoped>
 .sponsor-section {
-    margin-bottom: 100px;
+  margin-bottom: 100px;
 }
 </style>

@@ -1,9 +1,11 @@
 <template lang="pug">
 section#DiamondSponsor.sponsor-section
   h2 Diamond Sponsor
-  .uk-grid.body
-    .uk-width-2-5.card
-       img.img(:src="sponsor ? sponsor.logoUrl : ''")
+  .uk-flex.uk-flex-wrap.sponsor-block
+    .uk-width-2-5.logo
+        .decoration-box
+        .logo-frame
+            img.img(:src="this.imgSrc")  
     .uk-width-3-5.text
        .name {{ sponsor ? sponsor.name_ja : '' }} 
        .desc {{ sponsor ? sponsor.description_ja : '' }}
@@ -12,30 +14,61 @@ section#DiamondSponsor.sponsor-section
 <script>
   export default {
     name: 'diamond',
-    props: ["sponsor"]
+    props: ["sponsor"],
+    computed: {
+      imgSrc: function(){
+        if (!this.sponsor.imgPath || this.sponsor.imgPath === ""){
+          return require("~/assets/img/noImage.png") 
+        } else {
+          return require("~/assets/img/sponsor/" + this.sponsor.imgPath) 
+        } 
+      }
+    }
   }
 </script>
 
 <style lang="scss" scoped>
-.body {
-    margin: 0;
-    padding: 0;
+* {
+  box-sizing: border-box;
 }
-.card, .text {
-    text-align: center;
-    line-height: 100px;
-    font-size: 30px;
-    color: white;
-    height: 300px;
-    opacity: .7;
+.sponsor-block {
+  height: 326px;
 }
-.card {
-    background-color: brown;
+.logo {
+  position: relative;
+//   height: 326px;
 }
 .text {
-    background-color: purple;
+  padding: 15px 0 0 67px;
+}
+.name {
+  font-size: 50px;
+  font-weight: 300;
+  line-height: normal;
+  color: #4a4a4a;
+}
+.desc {
+  padding: 20px 0 0 0;
+}
+.decoration-box, .logo-frame {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.decoration-box {
+  transform: rotate(5deg);
+  background-image: linear-gradient(62deg, #28aae2, #00dfd8);
+}
+.logo-frame {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 15px;
+  border-radius: 4px;
+  background-color: white;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.2);
 }
 .img {
-    width: 200px;
+  width: 100%;
 }
 </style>
